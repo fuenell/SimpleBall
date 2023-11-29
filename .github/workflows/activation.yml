@@ -1,0 +1,27 @@
+name: Acquire activation file
+on:
+  workflow_dispatch: {}
+jobs:
+  activation:
+    name: Request manual activation file 🔑
+    runs-on: ubuntu-latest
+    steps:
+      - name: Request manual activation file
+        id: getManualLicenseFile
+        uses: game-ci/unity-request-activation-file@v2
+
+      - name: Expose as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.getManualLicenseFile.outputs.filePath }}
+          path: ${{ steps.getManualLicenseFile.outputs.filePath }}
+          
+      - name: Read Me
+        run: |
+          echo '1. Sunmmary로 이동 후 Artifacts에 업로드된 .alf 파일 다운'
+          echo '2. 다음 링크 접속 -> https://license.unity3d.com/manual'
+          echo '3. 위 사이트에 다운받은 alf 등록 후 ulf 파일 다운'
+          echo '4. Settings > Actions > Secrets > New repository secret (아래 3개 변수 추가)'
+          echo 'UNITY_LICENSE - (ulf 파일의 내용 복사)'
+          echo 'UNITY_EMAIL - (Unity 이메일)'
+          echo 'UNITY_PASSWORD - (Unity 비밀번호)'
