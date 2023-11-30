@@ -27,6 +27,7 @@ public class Block : MonoBehaviour
             SetHP(m_HP - 1);
             if (m_HP <= 0)
             {
+                m_BreakParticle.transform.position = this.transform.position;
                 m_BreakParticle.transform.parent = null;
                 m_BreakParticle.Play();
                 this.gameObject.SetActive(false);
