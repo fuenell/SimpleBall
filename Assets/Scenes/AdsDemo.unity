@@ -492,7 +492,7 @@ MonoBehaviour:
   Width: 0.5
   Margin: 20
   AnchorPosition: 2
-  FontSize: 14
+  FontSize: 24
   BackgroundOpacity: 0.5
   BackgroundColor: {r: 0, g: 0, b: 0, a: 1}
   LogMessages: 1
