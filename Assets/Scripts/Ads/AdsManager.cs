@@ -50,27 +50,39 @@ public class AdsManager : MonoBehaviour
         IronSourceRewardedVideoEvents.onAdClickedEvent += RewardedVideoOnAdClickedEvent;
     }
 
-    private void SDKInitialized()
-    {
-        print("SDK Init");
-    }
-
     private void OnApplicationPause(bool pause)
     {
         IronSource.Agent.onApplicationPause(pause);
     }
 
+    private void SDKInitialized()
+    {
+        print("SDK Init");
+        LoadBanner();
+    }
 
     #region banner
 
     public void LoadBanner()
     {
+        print("LoadBanner");
         IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
     }
 
     public void DestroyBanner()
     {
+        print("DestroyBanner");
         IronSource.Agent.destroyBanner();
+    }
+    public void HideBanner()
+    {
+        print("HideBanner");
+        IronSource.Agent.hideBanner();
+    }
+    public void DisplayBanner()
+    {
+        print("DisplayBanner");
+        IronSource.Agent.displayBanner();
     }
 
     /************* Banner AdInfo Delegates *************/
@@ -112,11 +124,13 @@ public class AdsManager : MonoBehaviour
 
     public void LoadInterstitial()
     {
+        print("LoadInterstitial");
         IronSource.Agent.loadInterstitial();
     }
 
     public void ShowInterstitial()
     {
+        print("ShowInterstitial");
         if (IronSource.Agent.isInterstitialReady())
         {
             IronSource.Agent.showInterstitial();
@@ -172,11 +186,13 @@ public class AdsManager : MonoBehaviour
 
     public void LoadRewarded()
     {
+        print("LoadRewarded");
         IronSource.Agent.loadRewardedVideo();
     }
 
     public void ShowRewarded()
     {
+        print("ShowRewarded");
         if (IronSource.Agent.isRewardedVideoAvailable())
         {
             IronSource.Agent.showRewardedVideo();
