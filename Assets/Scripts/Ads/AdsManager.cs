@@ -95,6 +95,7 @@ public class AdsManager : MonoBehaviour
     void BannerOnAdLoadFailedEvent(IronSourceError ironSourceError)
     {
         print("BannerOnAdLoadFailedEvent");
+        Invoke("LoadBanner", 5);
     }
     // Invoked when end user clicks on the banner ad
     void BannerOnAdClickedEvent(IronSourceAdInfo adInfo)
