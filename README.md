@@ -14,5 +14,5 @@
 - [Unity Builder (game-ci/unity-builder)](https://github.com/marketplace/actions/unity-builder)
 - [Upload Play Store (r0adkll/upload-google-play)](https://github.com/marketplace/actions/upload-android-release-to-play-store)
 
-# 배포 상황 [#GooglePlay](https://play.google.com/store/apps/details?id=com.Normals.SimpleBall&hl=ko)
+# 배포 상황 [#GooglePlay](https://play.google.com/store/apps/details?id=com.fuenell.simpleball&hl=ko)
 ![image](https://user-images.githubusercontent.com/37904040/178137134-8dbac23f-dbb8-4964-a27a-0ff55f0ffa16.png)
