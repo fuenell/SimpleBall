@@ -26,8 +26,8 @@ public class GameManager : MonoBehaviour
         public List<Vector2> newBallList;   // newball 위치 리스트
     }
 
-    private readonly string GameStateKey = "GameState";
-    private readonly string MaxScoreKey = "MaxScore";
+    private const string GAME_STATE_KEY = "GameState";
+    private const string MAX_SCORE_KEY = "MaxScore";
 
     private int m_Score;
     private int m_MaxScore;
@@ -69,9 +69,9 @@ public class GameManager : MonoBehaviour
         m_MapNewBallList = new List<GameObject>();
 
         // 이전 기록 불러오기
-        if (PlayerPrefs.HasKey(MaxScoreKey))
+        if (PlayerPrefs.HasKey(MAX_SCORE_KEY))
         {
-            m_MaxScore = PlayerPrefs.GetInt(MaxScoreKey);
+            m_MaxScore = PlayerPrefs.GetInt(MAX_SCORE_KEY);
         }
         else
         {
@@ -79,9 +79,9 @@ public class GameManager : MonoBehaviour
         }
 
         // 이전 맵 정보, 점수, 발사 지점, 공 개수, 발사 여부 및 발사 각도
-        if (PlayerPrefs.HasKey(GameStateKey))
+        if (PlayerPrefs.HasKey(GAME_STATE_KEY))
         {
-            string gameStateJson = PlayerPrefs.GetString(GameStateKey);
+            string gameStateJson = PlayerPrefs.GetString(GAME_STATE_KEY);
             LoadGame(JsonUtility.FromJson<GameState>(gameStateJson));
         }
         else
@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
             gameState.newBallList.Add(m_MapNewBallList[i].transform.position);
         }
 
-        PlayerPrefs.SetString(GameStateKey, JsonUtility.ToJson(gameState));
+        PlayerPrefs.SetString(GAME_STATE_KEY, JsonUtility.ToJson(gameState));
         PlayerPrefs.Save();
     }
 
@@ -257,8 +257,8 @@ public class GameManager : MonoBehaviour
             m_CameraAnimator.SetTrigger("Shake");
             m_GameOverPanel.SetActive(true);
             m_ResultScoreText.text = "최종 점수: " + m_Score;
-            PlayerPrefs.SetInt(MaxScoreKey, m_MaxScore);
-            PlayerPrefs.DeleteKey(GameStateKey);
+            PlayerPrefs.SetInt(MAX_SCORE_KEY, m_MaxScore);
+            PlayerPrefs.DeleteKey(GAME_STATE_KEY);
             PlayerPrefs.Save();
 
             // 게임 종료 시 전면 광고 표시

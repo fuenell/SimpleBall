@@ -27,6 +27,8 @@ public class BallController : MonoBehaviour
     // 모든 공 발사
     public IEnumerator LaunchAllBall(Vector3 direction, Action callback)
     {
+        float launchTime = Time.realtimeSinceStartup;
+
         m_RetrieveCount = 0;
 
         Vector3 initPos = m_ShootingPosition;
@@ -39,16 +41,28 @@ public class BallController : MonoBehaviour
             m_BallList[i].AddForce(direction * m_BallSpeed);
             StartCoroutine(CheckHorizontal(m_BallList[i]));
             yield return StartCoroutine(WaitFixedUpdate(3));
+
+            SetTimeScale(launchTime);
         }
 
         // 공 수신 대기
         while (m_RetrieveCount < m_BallList.Count)
         {
             yield return null;
+
+            SetTimeScale(launchTime);
         }
 
         SetBallCountText(m_BallList.Count, m_ShootingPosition);
         callback?.Invoke();
+
+        Time.timeScale = 1f;
+    }
+
+    private void SetTimeScale(float launchTime)
+    {
+        // 최저 속도 1, 최고 속도 10, 발사 이후 흐른 시간에 비례해 게임 속도 증가
+        Time.timeScale = Mathf.Min(Mathf.Round(Mathf.Max(1f, (Time.realtimeSinceStartup - launchTime) * 0.5f)), 10f);
     }
 
     // 공 수평 이동 검사
