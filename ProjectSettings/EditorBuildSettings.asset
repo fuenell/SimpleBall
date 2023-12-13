@@ -5,13 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/SimpleBall.unity
     guid: f1ef55a7240cc2e41903c837314c9e38
   - enabled: 0
     path: Assets/IronSource/DemoScene/IronSourceDemo.unity
     guid: ccc0ac08126704384bdda74c26d99797
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/AdsDemo.unity
     guid: ec2bb1e3e349f3d48a4ccabe50c13d88
   m_configObjects: {}

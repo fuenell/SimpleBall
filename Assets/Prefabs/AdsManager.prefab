@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8010613716241771459
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8681709571762271904}
+  - component: {fileID: 247188936612710107}
+  - component: {fileID: 7474240852906248997}
+  m_Layer: 0
+  m_Name: AdsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8681709571762271904
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010613716241771459}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &247188936612710107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010613716241771459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57488d8ed06dc314fbd9d1295f4ca385, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7474240852906248997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010613716241771459}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9b2f56c433896e478d4977e16db7511, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLog: 1
+  ShowInEditor: 1
+  Height: 0.5
+  Width: 0.5
+  Margin: 20
+  AnchorPosition: 2
+  FontSize: 24
+  BackgroundOpacity: 0.5
+  BackgroundColor: {r: 0, g: 0, b: 0, a: 1}
+  LogMessages: 1
+  LogWarnings: 1
+  LogErrors: 1
+  MessageColor: {r: 1, g: 1, b: 1, a: 1}
+  WarningColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  ErrorColor: {r: 1, g: 0.5, b: 0.5, a: 1}
+  StackTraceMessages: 0
+  StackTraceWarnings: 0
+  StackTraceErrors: 1

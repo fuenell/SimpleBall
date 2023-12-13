@@ -92,6 +92,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        // 배너 광고 로드
+        AdsManager.Instance.LoadBanner();
+    }
+
     // 진행 중인 게임상태 저장
     private void SaveGame()
     {
@@ -254,6 +260,13 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt(MaxScoreKey, m_MaxScore);
             PlayerPrefs.DeleteKey(GameStateKey);
             PlayerPrefs.Save();
+
+            // 게임 종료 시 전면 광고 표시
+            if (AdsManager.Instance.CanShowInterstitial())
+            {
+                AdsManager.Instance.ShowInterstitial();
+            }
+
             yield break;
         }
 

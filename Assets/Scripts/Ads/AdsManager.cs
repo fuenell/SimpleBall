@@ -5,18 +5,27 @@ using UnityEngine;
 
 public class AdsManager : MonoBehaviour
 {
+    public static AdsManager Instance;
+
 #if UNITY_ANDROID
-    string appKey = "1caefcd45";
+    private const string APP_KEY = "1caefcd45";
 #elif UNITY_IPHONE
-        string appKey = "";
+    private const string APP_KEY = "";
 #else
-        string appKey = "unexpected_platform";
+    private const string APP_KEY = "unexpected_platform";
 #endif
+
+    private bool isBannerLoadingFailed = false;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
         IronSource.Agent.validateIntegration();
-        IronSource.Agent.init(appKey);
+        IronSource.Agent.init(APP_KEY);
     }
 
     private void OnEnable()
@@ -58,19 +67,48 @@ public class AdsManager : MonoBehaviour
     private void SDKInitialized()
     {
         print("SDK Init");
-        LoadBanner();
+        StartCoroutine(LoadAds());
+    }
+
+    private IEnumerator LoadAds()
+    {
+        YieldInstruction yieldInstruction = new WaitForSeconds(5);
+
+        while (true)
+        {
+            if (IronSource.Agent.isInterstitialReady() == false)
+            {
+                IronSource.Agent.loadInterstitial();
+            }
+
+            if (IronSource.Agent.isRewardedVideoAvailable() == false)
+            {
+                IronSource.Agent.loadRewardedVideo();
+            }
+
+            if (isBannerLoadingFailed)
+            {
+                LoadBanner();
+            }
+
+            yield return yieldInstruction;
+        }
     }
 
     #region banner
 
     public void LoadBanner()
     {
+        isBannerLoadingFailed = false;
+
         print("LoadBanner");
         IronSource.Agent.loadBanner(IronSourceBannerSize.BANNER, IronSourceBannerPosition.BOTTOM);
     }
 
     public void DestroyBanner()
     {
+        isBannerLoadingFailed = false;
+
         print("DestroyBanner");
         IronSource.Agent.destroyBanner();
     }
@@ -89,13 +127,15 @@ public class AdsManager : MonoBehaviour
     //Invoked once the banner has loaded
     void BannerOnAdLoadedEvent(IronSourceAdInfo adInfo)
     {
-        print("BannerOnAdLoadedEvent");
+        print("Banner Loaded");
+        isBannerLoadingFailed = false;
     }
     //Invoked when the banner loading process has failed.
     void BannerOnAdLoadFailedEvent(IronSourceError ironSourceError)
     {
-        print("BannerOnAdLoadFailedEvent");
-        Invoke("LoadBanner", 5);
+        print("Banner Failed");
+        //Invoke("LoadBanner", 5);
+        isBannerLoadingFailed = true;
     }
     // Invoked when end user clicks on the banner ad
     void BannerOnAdClickedEvent(IronSourceAdInfo adInfo)
@@ -123,10 +163,15 @@ public class AdsManager : MonoBehaviour
 
     #region Interstitial
 
-    public void LoadInterstitial()
+    private void LoadInterstitial()
     {
         print("LoadInterstitial");
         IronSource.Agent.loadInterstitial();
+    }
+
+    public bool CanShowInterstitial()
+    {
+        return IronSource.Agent.isInterstitialReady();
     }
 
     public void ShowInterstitial()
@@ -146,12 +191,12 @@ public class AdsManager : MonoBehaviour
     // Invoked when the interstitial ad was loaded succesfully.
     void InterstitialOnAdReadyEvent(IronSourceAdInfo adInfo)
     {
-        print("InterstitialOnAdReadyEvent");
+        print("Interstitial Ready");
     }
     // Invoked when the initialization process has failed.
     void InterstitialOnAdLoadFailed(IronSourceError ironSourceError)
     {
-        print("InterstitialOnAdLoadFailed");
+        print("Interstitial Failed");
     }
     // Invoked when the Interstitial Ad Unit has opened. This is the impression indication. 
     void InterstitialOnAdOpenedEvent(IronSourceAdInfo adInfo)
@@ -185,10 +230,15 @@ public class AdsManager : MonoBehaviour
 
     #region Rewarded
 
-    public void LoadRewarded()
+    private void LoadRewarded()
     {
         print("LoadRewarded");
         IronSource.Agent.loadRewardedVideo();
+    }
+
+    public bool CanShowRewarded()
+    {
+        return IronSource.Agent.isRewardedVideoAvailable();
     }
 
     public void ShowRewarded()
@@ -210,13 +260,13 @@ public class AdsManager : MonoBehaviour
     // This replaces the RewardedVideoAvailabilityChangedEvent(true) event
     void RewardedVideoOnAdAvailable(IronSourceAdInfo adInfo)
     {
-        print("RewardedVideoOnAdAvailable");
+        print("Rewarded Available");
     }
     // Indicates that no ads are available to be displayed
     // This replaces the RewardedVideoAvailabilityChangedEvent(false) event
     void RewardedVideoOnAdUnavailable()
     {
-        print("RewardedVideoOnAdUnavailable");
+        print("Rewarded Unavailable");
     }
     // The Rewarded Video ad view has opened. Your activity will loose focus.
     void RewardedVideoOnAdOpenedEvent(IronSourceAdInfo adInfo)
