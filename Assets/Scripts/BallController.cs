@@ -30,7 +30,7 @@ public class BallController : MonoBehaviour
     {
         m_IsSkipping = false;
 
-        float launchTime = Time.realtimeSinceStartup;
+        float launchTime = Time.fixedTime;
 
         m_RetrieveCount = 0;
 
@@ -83,7 +83,7 @@ public class BallController : MonoBehaviour
     private void SetTimeScale(float launchTime)
     {
         // 최저 속도 1, 최고 속도 10, 발사 이후 흐른 시간에 비례해 게임 속도 증가
-        Time.timeScale = Mathf.Min(Mathf.Round(Mathf.Max(1f, (Time.realtimeSinceStartup - launchTime) * 0.5f)), 10f);
+        Time.timeScale = Mathf.Min(Mathf.Round(Mathf.Max(1f, (Time.fixedTime - launchTime) * 0.5f)), 10f);
     }
 
     // 공 수평 이동 검사
