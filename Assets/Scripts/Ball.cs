@@ -8,6 +8,9 @@ public class Ball : MonoBehaviour
     public BallController m_BallController;
     public Rigidbody2D m_Rigidbody2D;
 
+    public int m_CollisionCount;
+    public TrailRenderer m_TrailRenderer;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Floor"))
@@ -15,11 +18,16 @@ public class Ball : MonoBehaviour
             m_Rigidbody2D.isKinematic = true;
             m_Rigidbody2D.velocity = Vector2.zero;
 
-            StartCoroutine(Move(m_BallController.RetrieveBall(this.transform.position.x)));
+            Vector3 nextShootingPosition = m_BallController.RetrieveBall(this.transform.position.x, m_CollisionCount == 0);
+            StartCoroutine(Move(nextShootingPosition));
+        }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Block"))
+        {
+            m_CollisionCount++;
         }
     }
 
-    private IEnumerator Move(Vector3 target)
+    public IEnumerator Move(Vector3 target)
     {
         Vector2 origin = this.transform.position;
         float duration = Vector2.Distance(origin, target) / 20f;

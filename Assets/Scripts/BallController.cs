@@ -8,11 +8,12 @@ public class BallController : MonoBehaviour
 {
     private WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
     private int m_RetrieveCount = 0;
+    private bool m_IsSkipping;
 
     public Vector2 m_ShootingPosition;
 
     public GameObject m_BallPrefab;
-    public List<Rigidbody2D> m_BallList;
+    public List<Ball> m_BallList;
     public float m_MaxX;
     public Text m_BallCountText;
     public Vector3 m_TextPosOffset = new Vector3(0, -1);
@@ -27,6 +28,8 @@ public class BallController : MonoBehaviour
     // 모든 공 발사
     public IEnumerator LaunchAllBall(Vector3 direction, Action callback)
     {
+        m_IsSkipping = false;
+
         float launchTime = Time.realtimeSinceStartup;
 
         m_RetrieveCount = 0;
@@ -36,10 +39,17 @@ public class BallController : MonoBehaviour
         // 공 발사
         for (int i = 0; i < m_BallList.Count; i++)
         {
+            if (m_IsSkipping)
+            {
+                break;
+            }
+
             SetBallCountText(m_BallList.Count - i - 1, initPos);
-            m_BallList[i].isKinematic = false;
-            m_BallList[i].AddForce(direction * m_BallSpeed);
-            StartCoroutine(CheckHorizontal(m_BallList[i]));
+            m_BallList[i].m_TrailRenderer.enabled = true;
+            m_BallList[i].m_CollisionCount = 0;
+            m_BallList[i].m_Rigidbody2D.isKinematic = false;
+            m_BallList[i].m_Rigidbody2D.AddForce(direction * m_BallSpeed);
+            StartCoroutine(CheckHorizontal(m_BallList[i].m_Rigidbody2D));
             yield return StartCoroutine(WaitFixedUpdate(3));
 
             SetTimeScale(launchTime);
@@ -48,15 +58,26 @@ public class BallController : MonoBehaviour
         // 공 수신 대기
         while (m_RetrieveCount < m_BallList.Count)
         {
+            if (m_IsSkipping)
+            {
+                break;
+            }
+
             yield return null;
 
             SetTimeScale(launchTime);
         }
 
+        Time.timeScale = 1f;
+
+
+        if (m_IsSkipping)
+        {
+            yield return new WaitForSeconds(1);
+        }
+
         SetBallCountText(m_BallList.Count, m_ShootingPosition);
         callback?.Invoke();
-
-        Time.timeScale = 1f;
     }
 
     private void SetTimeScale(float launchTime)
@@ -80,7 +101,7 @@ public class BallController : MonoBehaviour
     }
 
     // 발사한 공 바닥에 도착
-    public Vector2 RetrieveBall(float x)
+    public Vector2 RetrieveBall(float x, bool isMissed)
     {
         if (m_RetrieveCount == 0)   // 처음으로 떨어진 공의 위치 지정
         {
@@ -97,9 +118,54 @@ public class BallController : MonoBehaviour
                 m_ShootingPosition.x = x;
             }
         }
+
+        // 빗나간 공이 돌아옴
+        if (isMissed)
+        {
+            // 더 이상 충돌이 없을 상태인지 검사
+            if (CheckMissedShot())
+            {
+                print("강제 회수");
+                ForceRetrieveAllBall(m_ShootingPosition);
+            }
+        }
+
         m_RetrieveCount++;
 
         return m_ShootingPosition;
+    }
+
+    // 모든 공 강제 회수
+    private void ForceRetrieveAllBall(Vector2 nextShootingPosition)
+    {
+        for (int i = 0; i < m_BallList.Count; i++)
+        {
+            m_BallList[i].m_TrailRenderer.enabled = false;
+            m_BallList[i].m_Rigidbody2D.isKinematic = true;
+            m_BallList[i].m_Rigidbody2D.velocity = Vector2.zero;
+            StartCoroutine(m_BallList[i].Move(nextShootingPosition));
+            //m_BallList[i].transform.position = nextShootingPosition;
+        }
+
+        m_RetrieveCount = m_BallList.Count;
+
+        m_IsSkipping = true;
+    }
+
+    // 더 이상 충돌이 없을 상태인지 검사
+    private bool CheckMissedShot()
+    {
+        for (int i = 0; i < m_BallList.Count; i++)
+        {
+            if (m_BallList[i].m_Rigidbody2D.isKinematic == false)
+            {
+                if (m_BallList[i].m_CollisionCount != 0)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     // FixedUpdate 한프레임 기다림
@@ -118,7 +184,7 @@ public class BallController : MonoBehaviour
         {
             GameObject ball = Instantiate(m_BallPrefab, m_ShootingPosition, Quaternion.identity, this.transform);
             ball.GetComponent<Ball>().m_BallController = this;
-            m_BallList.Add(ball.GetComponent<Rigidbody2D>());
+            m_BallList.Add(ball.GetComponent<Ball>());
         }
         SetBallCountText(m_BallList.Count, m_ShootingPosition);
     }
