@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     private int m_MaxScore;
     private bool m_IsTouching = false;
     private bool m_IsShooting;
+    private bool m_IsPausing;
     private List<NewBall> m_FalledNewBallList;
 
     private Vector3 m_ShootDir;
@@ -58,10 +59,14 @@ public class GameManager : MonoBehaviour
     public GameObject m_GameOverPanel;
     public Animator m_CameraAnimator;
     public Text m_ResultScoreText;
+    public GameObject m_PauseUI;
 
     private void Awake()
     {
+        Time.timeScale = 1f;
+
         m_GameOverPanel.SetActive(false);
+        m_PauseUI.SetActive(false);
         m_TouchLineRenderer.gameObject.SetActive(false);
 
         m_FalledNewBallList = new List<NewBall>();
@@ -96,6 +101,21 @@ public class GameManager : MonoBehaviour
     {
         // 배너 광고 로드
         AdsManager.Instance.LoadBanner();
+    }
+
+    public void PauseGame()
+    {
+        m_IsPausing = true;
+        Time.timeScale = 0f;
+        m_PauseUI.SetActive(true);
+    }
+
+    public void ResumeGame()
+    {
+        m_IsTouching = false;
+        m_IsPausing = false;
+        Time.timeScale = 1f;
+        m_PauseUI.SetActive(false);
     }
 
     // 진행 중인 게임상태 저장
@@ -167,8 +187,10 @@ public class GameManager : MonoBehaviour
     // 터치 감지
     void Update()
     {
-        if (m_IsShooting)
+        if (m_IsPausing || m_IsShooting)
+        {
             return;
+        }
 
         // 조준 시작
         if (Input.GetKeyDown(KeyCode.Mouse0))

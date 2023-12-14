@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Block : MonoBehaviour
 {
-    public enum BlockType { Square, LeftTri, RightTri, Ellipse }
+    public enum BlockType { Rectangle, LeftTri, RightTri, Ellipse }
 
     public int m_HP;
     public int m_MaxHP = 1;

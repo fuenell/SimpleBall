@@ -5063,7 +5063,7 @@ GameObject:
   - component: {fileID: 4131876646810306004}
   - component: {fileID: 4670926016328199424}
   m_Layer: 8
-  m_Name: square
+  m_Name: rectangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
