@@ -30,7 +30,7 @@ public class BallController : MonoBehaviour
     {
         m_IsSkipping = false;
 
-        float launchTime = Time.fixedTime;
+        float launchTime = Time.time;
 
         m_RetrieveCount = 0;
 
@@ -80,10 +80,11 @@ public class BallController : MonoBehaviour
         callback?.Invoke();
     }
 
+    // 시간에 따른 게임 속도 증가
     private void SetTimeScale(float launchTime)
     {
         // 최저 속도 1, 최고 속도 10, 발사 이후 흐른 시간에 비례해 게임 속도 증가
-        Time.timeScale = Mathf.Min(Mathf.Round(Mathf.Max(1f, (Time.fixedTime - launchTime) * 0.5f)), 10f);
+        Time.timeScale = Mathf.Min(Mathf.Floor(Mathf.Max(1f, Mathf.Sqrt((Time.time - launchTime) * 0.8f))), 10f);
     }
 
     // 공 수평 이동 검사
@@ -125,7 +126,6 @@ public class BallController : MonoBehaviour
             // 더 이상 충돌이 없을 상태인지 검사
             if (CheckMissedShot())
             {
-                print("강제 회수");
                 ForceRetrieveAllBall(m_ShootingPosition);
             }
         }
@@ -138,13 +138,14 @@ public class BallController : MonoBehaviour
     // 모든 공 강제 회수
     private void ForceRetrieveAllBall(Vector2 nextShootingPosition)
     {
+        SetBallCountText(0, nextShootingPosition);
+
         for (int i = 0; i < m_BallList.Count; i++)
         {
             m_BallList[i].m_TrailRenderer.enabled = false;
             m_BallList[i].m_Rigidbody2D.isKinematic = true;
             m_BallList[i].m_Rigidbody2D.velocity = Vector2.zero;
             StartCoroutine(m_BallList[i].Move(nextShootingPosition));
-            //m_BallList[i].transform.position = nextShootingPosition;
         }
 
         m_RetrieveCount = m_BallList.Count;

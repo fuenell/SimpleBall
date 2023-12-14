@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
@@ -40,15 +38,4 @@ public class Ball : MonoBehaviour
 
         this.transform.position = target;
     }
-
-    //private void Update()
-    //{
-    //    if (m_Rigidbody2D.isKinematic == false)
-    //    {
-    //        if (-0.05f < m_Rigidbody2D.velocity.y && m_Rigidbody2D.velocity.y < 0.05f)
-    //        {
-    //            m_Rigidbody2D.AddForce(Vector2.down * 1000f);
-    //        }
-    //    }
-    //}
 }
