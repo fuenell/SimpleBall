@@ -128,12 +128,13 @@ public class BallController : MonoBehaviour
             }
         }
 
-        // 빗나간 공이 돌아옴
-        if (isMissed)
+        // 빗나간 공이 돌아옴 && 아직 발사할 공이 남아 있으면
+        if (isMissed && m_BallCountText.text != string.Empty)
         {
             // 더 이상 충돌이 없을 상태인지 검사
             if (CheckMissedShot())
             {
+                // 발사된공, 남은공 모두 회수
                 ForceRetrieveAllBall(m_ShootingPosition);
             }
         }
@@ -202,7 +203,7 @@ public class BallController : MonoBehaviour
     {
         if (count <= 0)
         {
-            m_BallCountText.text = "";
+            m_BallCountText.text = string.Empty;
         }
         else
         {
