@@ -62,7 +62,7 @@ public class IronSourceRewardedVideoLevelPlayAndroid : AndroidJavaProxy, IUnityL
 
     void onAdRewarded(string description, string data)
     {
-        if (this.OnAdRewarded != null)
+        if (this.OnAdRewarded != null && string.IsNullOrWhiteSpace(description))
         {
             IronSourcePlacement ssp = IronSourceUtils.getPlacementFromObject(description);
             IronSourceAdInfo adInfo = new IronSourceAdInfo(data);
@@ -73,7 +73,7 @@ public class IronSourceRewardedVideoLevelPlayAndroid : AndroidJavaProxy, IUnityL
 
     void onAdClicked(string description, string data)
     {
-        if (this.OnAdClicked != null)
+        if (this.OnAdClicked != null && string.IsNullOrWhiteSpace(description))
         {
             IronSourcePlacement ssp = IronSourceUtils.getPlacementFromObject(description);
             IronSourceAdInfo adInfo = new IronSourceAdInfo(data);
