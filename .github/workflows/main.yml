@@ -66,3 +66,4 @@ jobs:
           releaseFiles: build/Android/Android.aab
           track: internal
           status: completed
+          changesNotSentForReview: true
