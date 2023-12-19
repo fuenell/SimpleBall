@@ -24,6 +24,7 @@ jobs:
           path: Library
           key: Library-${{ matrix.targetPlatform }}
           restore-keys: Library-
+          enableCrossOsArchive: true
       - uses: game-ci/unity-builder@v3
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
