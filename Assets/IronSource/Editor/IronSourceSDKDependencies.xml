@@ -1,5 +1,5 @@
 <dependencies>
-  <unityversion>7.6.1</unityversion>
+  <unityversion>7.6.2</unityversion>
 
   <androidPackages>
     <androidPackage spec="com.ironsource.sdk:mediationsdk:7.6.1">
