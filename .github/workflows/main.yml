@@ -2,8 +2,8 @@ name: Build project
 
 on:
   push:
-    tags:        
-      - v**
+    branches:
+      - main
 
 jobs:
   buildForAndroidPlatform:
@@ -28,7 +28,7 @@ jobs:
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          versioning: Tag
+          versioning: Semantic
           targetPlatform: ${{ matrix.targetPlatform }}
           androidExportType: 'androidAppBundle'
           androidKeystoreName: user.keystore
