@@ -80,6 +80,7 @@ char *const IRONSOURCE_BANNER_EVENTS = "IronSourceBannerEvents";
         [IronSource setBannerDelegate:self];
         [IronSource addImpressionDataDelegate:self];
         [IronSource setConsentViewWithDelegate:self];
+        [IronSource setSegmentDelegate:self];
         
         //set level play listeneres
         [IronSource setLevelPlayBannerDelegate:self.bannerLevelPlayDelegate];
@@ -834,7 +835,7 @@ char *const IRONSOURCE_BANNER_EVENTS = "IronSourceBannerEvents";
 #pragma mark Helper methods
 
 - (void) setSegment:(NSString*) segmentJSON {
-    [IronSource setSegmentDelegate:self];
+    
     ISSegment *segment = [[ISSegment alloc] init];
     NSError* error;
     if (!segmentJSON)
