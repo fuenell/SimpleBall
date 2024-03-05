@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         // 배너 광고 로드
-        //AdsManager.Instance.LoadBanner();
+        AdsManager.Instance.LoadBanner();
     }
 
     public void PauseGame()
@@ -283,11 +283,11 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.DeleteKey(GAME_STATE_KEY);
             PlayerPrefs.Save();
 
-            //// 게임 종료 시 전면 광고 표시
-            //if (AdsManager.Instance.CanShowInterstitial())
-            //{
-            //    AdsManager.Instance.ShowInterstitial();
-            //}
+            // 게임 종료 시 전면 광고 표시
+            if (AdsManager.Instance.CanShowInterstitial())
+            {
+                AdsManager.Instance.ShowInterstitial();
+            }
 
             yield break;
         }
